@@ -1,0 +1,135 @@
+const mongoose = require('mongoose')
+const User = require('../models/User')
+const Question = require('../models/Question')
+const Answer = require('../models/Answer')
+var slug = require('achim-slug')
+require('dotenv').config()
+
+function createNewAnswer (req, res) {
+  Answer.create({
+    answer: req.body.answer,
+    creator: req.id
+  })
+  .then(dataAnswer => {
+    console.log(`ini dataAnswer ${dataAnswer}`)
+    Question.updateOne({
+      _id: req.params.questionid
+    }, {
+      $push: {
+        answers: dataAnswer._id
+      }
+    })
+    .then(data => res.send(dataAnswer))
+    .catch(err => res.send(err))
+  })
+  .catch(err => res.send(err))
+}
+
+//Only for development purpose
+function getOneAnswer (req, res) {
+  Answer.find({
+    _id: req.params.questionid
+  })
+  .then(answer => res.send(answer))
+  .catch(err => res.send(err))
+}
+
+function deleteOneAnswer (req, res) {
+  Answer.deleteOne({
+    _id: req.params.questionid
+  })
+  .then(data => {
+    console.log(`ini data author loh ${data.creator}`)
+    if (data.result.n >= 1) {
+      Question.updateOne({
+        answers: req.params.questionid
+      }, {
+        $pull: {
+          answers: req.params.questionid
+        }
+      })
+      .then(data => res.send('Cie kehapus'))
+      .catch(err => res.send(err))
+    } else {
+      res.send(data)
+    }
+  })
+  .catch(err => res.send(err))
+}
+
+function upvoteAnswer (req, res) {
+  Answer.findOne({
+    _id: req.params.questionid
+  })
+  .then(data => {
+    if (data.voteup.indexOf(req.id) === -1) {
+      data.voteup.push(req.id)
+      data.votedown.splice(req.id, 1)
+      data.save(function(err, votedAnswer) {
+        if(err) console.log(err)
+        else console.log(votedAnswer)
+      })
+      res.send('Akhirnya ada yang voteup')
+    } else if (data.voteup.indexOf(req.id) !== -1) {
+      console.log('udah ada yg voteup');
+      data.voteup.forEach(function(voter) {
+        if (voter == req.id) {
+          res.send('Ciee udah milih')
+        } else if (voter.length == 0) {
+          console.log('Masuk nih ke else')
+          data.voteup.push(req.id)
+          data.votedown.splice(req.id, 1)
+          data.save(function(err, votedAnswer) {
+            if(err) console.log(err)
+            else console.log(votedAnswer)
+          })
+        }
+      })
+      res.send('ah elah kok ke bagian upvote sini sih')
+    }
+  })
+  .catch(err => res.send(err))
+}
+
+function downvoteAnswer (req, res) {
+  Answer.findOne({
+    _id: req.params.questionid
+  })
+  .then(data => {
+    if (data.votedown.indexOf(req.id) === -1) {
+      data.votedown.push(req.id)
+      data.voteup.splice(req.id, 1)
+      data.save(function(err, votedAnswer) {
+        if(err) console.log(err)
+        else console.log(votedAnswer)
+      })
+      res.send('Akhirnya ada yang votedown')
+    } else if (data.votedown.indexOf(req.id) !== -1) {
+      console.log('udah ada yg voteup');
+      data.votedown.forEach(function(voter) {
+        if (voter == req.id) {
+          res.send('Ciee udah milih')
+        } else if (voter.length == 0) {
+          console.log('Masuk nih ke else')
+          data.votedown.push(req.id)
+          data.voteup.splice(req.id, 1)
+          data.save(function(err, votedAnswer) {
+            if(err) console.log(err)
+            else console.log(votedAnswer)
+          })
+        }
+      })
+      res.send('ah elah kok ke bagian downvote sini sih')
+    }
+  })
+  .catch(err => res.send(err))
+}
+
+
+module.exports = {
+  createNewAnswer,
+  getOneAnswer,
+  deleteOneAnswer,
+  upvoteAnswer,
+  downvoteAnswer
+}
