@@ -31,6 +31,28 @@ function getAll (req, res) {
       select: 'username'
     }
   })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'voteup',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'votedown',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'voteup',
+    select: 'username'
+  })
+  .populate({
+    path: 'votedown',
+    select: 'username'
+  })
   .then(question => res.send(question))
   .catch(err => res.send(err))
 }

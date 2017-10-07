@@ -19,7 +19,10 @@ function createNewAnswer (req, res) {
         answers: dataAnswer._id
       }
     })
-    .then(data => res.send(dataAnswer))
+    .then(data => {
+      console.log(dataAnswer)
+      res.send(dataAnswer)
+    })
     .catch(err => res.send(err))
   })
   .catch(err => res.send(err))
@@ -28,7 +31,7 @@ function createNewAnswer (req, res) {
 //Only for development purpose
 function getOneAnswer (req, res) {
   Answer.find({
-    _id: req.params.questionid
+    _id: req.params.answerid
   })
   .then(answer => res.send(answer))
   .catch(err => res.send(err))
@@ -36,16 +39,16 @@ function getOneAnswer (req, res) {
 
 function deleteOneAnswer (req, res) {
   Answer.deleteOne({
-    _id: req.params.questionid
+    _id: req.params.answerid
   })
   .then(data => {
     console.log(`ini data author loh ${data.creator}`)
     if (data.result.n >= 1) {
       Question.updateOne({
-        answers: req.params.questionid
+        answers: req.params.answerid
       }, {
         $pull: {
-          answers: req.params.questionid
+          answers: req.params.answerid
         }
       })
       .then(data => res.send('Cie kehapus'))
@@ -59,7 +62,7 @@ function deleteOneAnswer (req, res) {
 
 function upvoteAnswer (req, res) {
   Answer.findOne({
-    _id: req.params.questionid
+    _id: req.params.answerid
   })
   .then(data => {
     if (data.voteup.indexOf(req.id) === -1) {
@@ -93,7 +96,7 @@ function upvoteAnswer (req, res) {
 
 function downvoteAnswer (req, res) {
   Answer.findOne({
-    _id: req.params.questionid
+    _id: req.params.answerid
   })
   .then(data => {
     if (data.votedown.indexOf(req.id) === -1) {
