@@ -12,5 +12,6 @@ router.post('/signup', userController.signUp)
 router.post('/signin', userController.signIn)
 router.get('/getall', auth.isLogin, auth.isAdmin, userController.getAllUser)
 router.delete('/:id', auth.isLogin, auth.isAdmin, userController.removeUser)
+router.put('/editUser/:id', auth.isLogin, auth.isAdmin, userController.editUser)
 
 module.exports = router;

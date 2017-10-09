@@ -13,13 +13,21 @@ var answers = require('./routes/answers');
 
 var app = express();
 
-mongoose.connect('mongodb://yosua1011:bangkekuda@hacktivoverflow-shard-00-00-xwzq4.mongodb.net:27017,hacktivoverflow-shard-00-01-xwzq4.mongodb.net:27017,hacktivoverflow-shard-00-02-xwzq4.mongodb.net:27017/test?ssl=true&replicaSet=HacktivOverflow-shard-0&authSource=admin', (err) => {
+mongoose.connect('mongodb://localhost/hacktivoverflow', (err) => {
   if (!err) {
     console.log('Database connected')
   } else {
     console.log('Error while connecting to database')
   }
 })
+
+// mongoose.connect('mongodb://yosua1011:bangkekuda@hacktivoverflow-shard-00-00-xwzq4.mongodb.net:27017,hacktivoverflow-shard-00-01-xwzq4.mongodb.net:27017,hacktivoverflow-shard-00-02-xwzq4.mongodb.net:27017/test?ssl=true&replicaSet=HacktivOverflow-shard-0&authSource=admin', (err) => {
+//   if (!err) {
+//     console.log('Database connected')
+//   } else {
+//     console.log('Error while connecting to database')
+//   }
+// })
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

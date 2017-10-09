@@ -42,7 +42,7 @@ function signIn (req, res) {
     }
   })
   .catch(err => {
-      res.send('User tidak berhasil masuk karena ' + err)
+      res.send('User tidak berhasil masuk karena')
   })
 }
 
@@ -65,9 +65,34 @@ function removeUser (req, res) {
   .catch(err => res.send(err))
 }
 
+function editUser (req, res) {
+  User.findById(req.params.id)
+  .then(editedUser => {
+    console.log(editedUser)
+    if (editedUser._id == req.params.id) {
+      editedUser.username = req.body.username || editedUser.username
+      editedUser.password = req.body.password || editedUser.password
+      editedUser.role = req.body.role || editedUser.role
+
+      editedUser.save((err, data) => {
+        if (err) {
+          res.send('Maaf tidak bisa save user yang anda edit')
+        }
+        res.send({
+          message: `Update data ${data.username} berhasil`
+        })
+      })
+    } else {
+      res.send('Gak bisa ngapus nih')
+    }
+  })
+  .catch(err => res.send(err))
+}
+
 module.exports = {
   signUp,
   signIn,
   getAllUser,
-  removeUser
+  removeUser,
+  editUser
 }
