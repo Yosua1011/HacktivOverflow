@@ -13,7 +13,7 @@ var answers = require('./routes/answers');
 
 var app = express();
 
-mongoose.connect('mongodb://localhost/hacktivoverflow', (err) => {
+mongoose.connect('mongodb://yosua1011:bangkekuda@hacktivoverflow-shard-00-00-xwzq4.mongodb.net:27017,hacktivoverflow-shard-00-01-xwzq4.mongodb.net:27017,hacktivoverflow-shard-00-02-xwzq4.mongodb.net:27017/test?ssl=true&replicaSet=HacktivOverflow-shard-0&authSource=admin', (err) => {
   if (!err) {
     console.log('Database connected')
   } else {
