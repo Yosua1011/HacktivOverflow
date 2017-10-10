@@ -8,7 +8,7 @@ router.get('/', questionController.getAll);
 router.get('/:slug', questionController.getOne);
 router.post('/post', auth.isLogin, questionController.createNew);
 router.put('/:id', auth.isLogin, questionController.editOne);
-router.delete('/:id', auth.isLogin, questionController.deleteOne);
+router.delete('/:id', auth.isLogin, auth.isQuestionAuthorAuth, questionController.deleteOne);
 router.put('/:slug/upvote', auth.isLogin, questionController.upvoteQuestion);
 router.put('/:slug/downvote', auth.isLogin, questionController.downvoteQuestion);
 

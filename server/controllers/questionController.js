@@ -9,7 +9,7 @@ function createNew (req, res) {
     slug: slug(`${req.body.title}`),
     title:  req.body.title,
     question: req.body.question,
-    author: req.id,
+    author: req.headers.username,
     answers: [],
     voteup: [],
     votedown: []
@@ -61,7 +61,36 @@ function getOne (req, res) {
   Question.find({
     slug: req.params.slug
   })
-  .then(questions => res.send(questions))
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'creator',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'voteup',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'votedown',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'voteup',
+    select: 'username'
+  })
+  .populate({
+    path: 'votedown',
+    select: 'username'
+  })
+  .then(question => res.send(question))
   .catch(err => res.send(err))
 }
 
@@ -96,13 +125,12 @@ function editOne (req, res) {
 }
 
 function deleteOne (req, res) {
-  Question.findByIdAndRemove(req.params.id)
+  Question.remove({
+    _id: req.params.id
+  })
   .then(deletedQuestions => {
-    if (deletedQuestions.author == req.id) {
-      res.send({message: 'Kedelete'})
-    } else {
-      res.send('Gak bisa ngapus nih')
-    }
+    console.log(req.headers.username)
+    res.send({message: 'Kedelete'})
   })
   .catch(err => res.send(err))
 }

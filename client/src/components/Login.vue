@@ -8,7 +8,7 @@
           </div>
           <div class="form-group has-success">
              <label class="control-label" for="inputSuccess">Password</label>
-             <input type="text" name="passLogin" placeholder="password" v-model="login.password" class="form-control" id="inputSuccess">
+             <input type="password" name="passLogin" placeholder="password" v-model="login.password" class="form-control" id="inputSuccess">
           </div>
           <div class="login">
              <a href="#" class="btn btn-info" id="loginBtn" @click="doLogin">Login</a>
@@ -22,17 +22,17 @@
              <div class="modal-dialog modal-sm" role="document">
                 <div class="modal-content">
                    <div class="modal-header">
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                      <router-link :to="'/home'"><button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button></router-link>
                       <h4 class="modal-title" id="myModalLabel">Register Form</h4>
                    </div>
                    <div class="modal-body">
-                      <label>Username :</label><br>
+                      <label id="username">Username :</label><br>
                       <input type="text"  name="userRegister" value="" class="form-control" v-model="register.username"><br>
-                      <label>Password :</label><br>
+                      <label id="password">Password :</label><br>
                       <input type="password"  name="passRegister" value="" class="form-control" v-model="register.password"><br>
                    </div>
                    <div class="modal-footer">
-                      <router-link :to="'/home'"><a class="btn btn-default">Cancel</a></router-link>
+                      <router-link :to="'/'"><a class="btn btn-default">Cancel</a></router-link>
                       <router-link :to="'/home'"><a type="submit" class="btn btn-primary" @click="doRegister">Submit</a></router-link>
                    </div>
                 </div>
@@ -69,7 +69,7 @@ export default {
         if (user.data.message !== `Username or password didn't match` && user.data.message !== 'User tidak berhasil masuk karena') {
           localStorage.clear()
           localStorage.setItem('token', user.data)
-          this.$router.push('/home')
+          this.$router.push('/')
         } else {
           this.$router.push('/')
           this.showAlert(user.data.message)
@@ -129,5 +129,8 @@ export default {
 .login #registerBtn {
   margin-top: 30px;
   font-size: 30px;
+},
+#username #password #myModalLabel {
+  background-color: white;
 }
 </style>
