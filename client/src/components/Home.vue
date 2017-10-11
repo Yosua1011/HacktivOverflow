@@ -21,13 +21,12 @@
 </template>
 
 <script>
-// import QuestionsList from '@/components/QuestionsList'
-// import NewQuestion from '@/components/NewQuestion'
+import { mapActions, mapState } from 'vuex'
 export default {
   name: 'container',
   data () {
     return {
-      head: 'Hacktiv Overflow Lalalalalala',
+      head: `Hacktiv Overflow, Welcome ${localStorage.getItem('username')}`,
       loginstate: false
     }
   },
@@ -36,6 +35,12 @@ export default {
   //   NewQuestion
   // },
   methods: {
+    ...mapActions([
+      'getUser'
+    ]),
+    ...mapState([
+      'user'
+    ]),
     doLogout () {
       localStorage.clear()
       this.loginstate = false

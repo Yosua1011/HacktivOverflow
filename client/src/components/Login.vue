@@ -44,6 +44,7 @@
 </template>
 
 <script>
+import { mapActions, mapState } from 'vuex'
 export default {
   data () {
     return {
@@ -58,6 +59,12 @@ export default {
     }
   },
   methods: {
+    ...mapActions([
+      'getUser'
+    ]),
+    ...mapState([
+      'user'
+    ]),
     doLogin () {
       var self = this
       this.$http.post('/signin', {
@@ -69,6 +76,7 @@ export default {
         if (user.data.message !== `Username or password didn't match` && user.data.message !== 'User tidak berhasil masuk karena') {
           localStorage.clear()
           localStorage.setItem('token', user.data)
+          this.getUser(user.data)
           this.$router.push('/')
         } else {
           this.$router.push('/')

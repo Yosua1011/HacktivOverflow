@@ -11,7 +11,8 @@ Vue.use(Vuex)
 
 const state = {
   questionsdata: [],
-  log: ''
+  log: '',
+  user: ''
 }
 
 const mutations = {
@@ -29,6 +30,9 @@ const mutations = {
   },
   errorLog (state, payload) {
     state.log = payload
+  },
+  setUser (state, payload) {
+    state.user = payload
   }
 }
 
@@ -79,6 +83,28 @@ const actions = {
   showAlert (msg) {
     if (msg !== null) this.$swal(`${msg}`)
     // Use sweetalret2
+  },
+  getUser ({commit}, token) {
+    http.post(`/pemecahtoken`, {
+      token: token
+    })
+    .then(({data}) => {
+      console.log(`ini data dari getUser ${data.username}`)
+      localStorage.setItem('username', data.username)
+      commit('setUser', {user: data, token: token})
+    })
+    .catch(err => console.log(err))
+  },
+  editQuestion ({commit}, question) {
+    http.put(`/questions/${question.id}`, {
+      headers: {
+        token: localStorage.getItem('token')
+      }
+    })
+    .then(({data}) => {
+      console.log('Sukses keedit')
+    })
+    .catch(err => console.log(err))
   }
 }
 

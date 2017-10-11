@@ -46,6 +46,17 @@ function signIn (req, res) {
   })
 }
 
+function pemecahToken (req, res) {
+  jwt.verify(req.body.token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      res.send(err)
+    } else {
+      console.log(decoded)
+      res.send(decoded)
+    }
+  })
+}
+
 function getAllUser (req, res) {
   User.find()
   .then(users => res.send(users))
@@ -94,5 +105,6 @@ module.exports = {
   signIn,
   getAllUser,
   removeUser,
-  editUser
+  editUser,
+  pemecahToken
 }
