@@ -8,7 +8,7 @@ require('dotenv').config()
 function createNewAnswer (req, res) {
   Answer.create({
     answer: req.body.answer,
-    creator: req.id
+    creator: req.headers.id
   })
   .then(dataAnswer => {
     console.log(`ini dataAnswer ${dataAnswer}`)
@@ -51,7 +51,7 @@ function deleteOneAnswer (req, res) {
           answers: req.params.answerid
         }
       })
-      .then(data => res.send('Cie kehapus'))
+      .then(data => res.send({message: 'Answer dihapus'}))
       .catch(err => res.send(err))
     } else {
       res.send(data)

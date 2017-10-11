@@ -1,6 +1,6 @@
 <template lang="html">
   <div class="container">
-    <h1 class="text-center">{{ head }}</h1>
+    <h1 class="text-center">Welcome to Hacktiv Overflow <span v-if="loginstate">{{ head }}</span></h1>
     <div class="row menu">
       <div class="col-md-6">
         <router-link :to="'/'">
@@ -26,32 +26,32 @@ export default {
   name: 'container',
   data () {
     return {
-      head: `Hacktiv Overflow, Welcome ${localStorage.getItem('username')}`,
-      loginstate: false
+      loginstate: false,
+      head: null
     }
   },
-  // components: {
-  //   QuestionsList,
-  //   NewQuestion
-  // },
   methods: {
     ...mapActions([
       'getUser'
     ]),
     ...mapState([
-      'user'
     ]),
     doLogout () {
       localStorage.clear()
       this.loginstate = false
-      this.$router.push('/')
       this.showAlert('Selamat anda sudah logout')
+      this.checkLogin()
     },
     checkLogin () {
+      console.log('check login')
       if (localStorage.getItem('token') === null) {
+        console.log('tak ada token')
         this.loginstate = false
+        this.head = null
       } else {
+        console.log('ada token')
         this.loginstate = true
+        this.head = localStorage.getItem('username')
       }
     },
     showAlert (msg) {
@@ -59,7 +59,10 @@ export default {
       this.$swal(`${msg}`)
     }
   },
+  computed: {
+  },
   created () {
+    // this.headline()
     this.checkLogin()
   }
 }

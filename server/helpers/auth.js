@@ -25,11 +25,13 @@ const isAdmin = (req,res,next) => {
 }
 
 const isAnswerCreatorAuth = (req,res,next) => {
-    Answer.findOne({
-      _id: req.params.questionid
+    Answer.find({
+      _id: req.params.answerid
     })
     .then(answer => {
-      if (answer.creator == req.headers.username) {
+      console.log(answer[0].creator)
+      console.log(req.headers.id)
+      if (answer[0].creator == req.headers.id) {
         next()
       } else {
         res.send({message: 'Lu bukan siapa2'})

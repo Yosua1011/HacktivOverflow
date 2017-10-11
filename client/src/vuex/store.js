@@ -12,7 +12,9 @@ Vue.use(Vuex)
 const state = {
   questionsdata: [],
   log: '',
-  user: ''
+  user: '',
+  loginstate: false,
+  head: null
 }
 
 const mutations = {
@@ -74,6 +76,7 @@ const actions = {
       if (data.message !== null) {
         console.log(`${JSON.stringify(data)} ini kedelete`)
         commit('spliceQuestion', id)
+        router.push('/')
       } else {
         this.showAlert(data.message)
       }
