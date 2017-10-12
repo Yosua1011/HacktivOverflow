@@ -2,7 +2,7 @@
   <div class="col-md-9">
     <div class="panel panel-primary">
       <div class="panel-heading">
-        <h3 class="panel-title">{{detail.title}}
+        <h3 class="panel-title">Title: {{detail.title}}
           <div style="text-align: right" v-if="loginstate === true && buttonstate === true">
             <button type="button" name="button"class="btn btn-warning" data-toggle="modal" data-target="#myEdit" @click="masukinData(detail)">
               <span class=""></span> Edit
@@ -37,9 +37,9 @@
       </div>
       <div class="panel-body">
         <div class="" style="text-align: left">
-          <p>{{detail.author}}</p>
+          <p>Author: {{detail.author}}</p>
           <p>
-            {{detail.question}}
+            Question: {{detail.question}}
           </p>
         </div>
         <div class="panel panel-primary" v-for="answer in detail.answers">
@@ -47,7 +47,7 @@
             <h3 class="panel-title text-left">Respon dari : {{answer.creator.username}}</h3>
           </div>
           <div class="panel-body text-left">
-            {{answer.answer}}
+            Answer: {{answer.answer}}
           </div>
             <button type="button" name="button"class="btn btn-warning" v-if="answer.creator.username === username" @click="deleteAnswer(answer._id)">
               <span class=""></span> Delete

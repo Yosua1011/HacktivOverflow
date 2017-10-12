@@ -5,6 +5,7 @@ var auth = require('../helpers/auth')
 
 /* GET users listing. */
 router.get('/', questionController.getAll);
+router.get('/:author', questionController.getByAuthor);
 router.get('/:slug', questionController.getOne);
 router.post('/post', auth.isLogin, questionController.createNew);
 router.put('/:id', auth.isLogin, questionController.editOne);

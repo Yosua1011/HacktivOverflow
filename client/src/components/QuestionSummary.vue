@@ -2,11 +2,11 @@
   <div>
     <div class="panel panel-primary" v-for="question in showQuestions">
       <div class="panel-heading">
-        <h3 class="panel-title">{{ question.title }}</h3>
-        <h3 class="panel-title">{{ question.author }}</h3>
+        <h3 class="panel-title">Title: {{ question.title }}</h3>
+        <h3 class="panel-title">Author: {{ question.author }}</h3>
       </div>
       <div class="panel-body">
-        {{ question.question }}
+        Question: {{ question.question }}
         <div class="" style="text-align: right">
           <router-link :to="'/' + question.slug">
             <button type="button" name="button"class="btn btn-warning" >

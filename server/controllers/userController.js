@@ -42,7 +42,7 @@ function signIn (req, res) {
     }
   })
   .catch(err => {
-      res.send('User tidak berhasil masuk karena')
+      res.send('User tidak berhasil masuk karena username atau password salah')
   })
 }
 

@@ -73,14 +73,14 @@ export default {
       })
       .then(user => {
         console.log(`This is user signin data ${JSON.stringify(user)}`)
-        if (user.data.message !== `Username or password didn't match` && user.data.message !== 'User tidak berhasil masuk karena') {
+        if (user.data !== 'User tidak berhasil masuk karena username atau password salah') {
           localStorage.clear()
           localStorage.setItem('token', user.data)
           this.getUser(user.data)
           this.$router.push('/')
         } else {
           this.$router.push('/')
-          this.showAlert(user.data.message)
+          this.showAlert(`username or password didn't match`)
         }
       })
       .catch(err => console.log(err))

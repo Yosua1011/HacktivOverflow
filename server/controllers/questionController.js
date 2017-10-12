@@ -94,6 +94,43 @@ function getOne (req, res) {
   .catch(err => res.send(err))
 }
 
+function getByAuthor (req, res) {
+  Question.find({
+    author: req.params.author
+  })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'creator',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'voteup',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'answers',
+    populate: {
+      path: 'votedown',
+      select: 'username'
+    }
+  })
+  .populate({
+    path: 'voteup',
+    select: 'username'
+  })
+  .populate({
+    path: 'votedown',
+    select: 'username'
+  })
+  .then(question => res.send(question))
+  .catch(err => res.send(err))
+}
+
 function editOne (req, res) {
   Question.findById(req.params.id)
   //   _id: req.params.id
@@ -207,6 +244,7 @@ module.exports = {
   createNew,
   getAll,
   getOne,
+  getByAuthor,
   editOne,
   deleteOne,
   upvoteQuestion,

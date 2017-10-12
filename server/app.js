@@ -13,7 +13,7 @@ var answers = require('./routes/answers');
 
 var app = express();
 
-// mongoose.connect('mongodb://localhost/hacktiv-overflow', (err) => {
+// mongoose.connect('mongodb://localhost/hacktivoverflow1', (err) => {
 //   if (!err) {
 //     console.log('Database connected')
 //   } else {
